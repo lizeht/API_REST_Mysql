@@ -23,7 +23,7 @@ router.post('/', function (req, res) {
     })
 
 });
-router.post('/client/', function (req, res) {
+router.post('/clients/', function (req, res) {
     console.log(req.body);
     const {username,email,password,names, lastnames, phone, photo, url_identification, region, birthday} = req.body;
       mysqlConection.query("INSERT INTO clients VALUES(NULL,?,?,?)", [url_identification, region, birthday], (err, row, fields) => {
@@ -73,7 +73,7 @@ router.post('/client/', function (req, res) {
 });
 
 router.get('/clients', (req, res) => {
-    mysqlConection.query("SELECT * FROM clients", (err, rows, fileds) => {
+    mysqlConection.query("SELECT * FROM clients JOIN users ON users.client = clients.idclient", (err, rows, fileds) => {
         if (err) {
             console.log("Error;", err);
         } else {
@@ -84,7 +84,7 @@ router.get('/clients', (req, res) => {
 });
 
 router.get('/deliveries', (req, res) => {
-    mysqlConection.query("SELECT * FROM deliveries", (err, rows, fileds) => {
+    mysqlConection.query("SELECT * FROM deliveries JOIN users ON users.delivery = deliveries.idsellers", (err, rows, fileds) => {
         if (err) {
             console.log("Error;", err);
         } else {
@@ -111,7 +111,7 @@ router.delete('/:iduser', function (req, res) {
     });
 
     //elimnina Elementos clients
-    router.delete('/client/:idclient', function (req, res) {
+    router.delete('/clients/:idclient', function (req, res) {
         const {idclient}= req.params;
         mysqlConection.query("DELETE clients.*,users.* FROM clients JOIN users ON users.client = clients.idclient WHERE clients.idclient  = ?", [idclient], (err, row, fields) => {
             if (err) {
