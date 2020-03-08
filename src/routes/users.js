@@ -61,6 +61,60 @@ router.post('/clients/', function (req, res) {
       })
   
   });
+  // Actualiza 
+  router.put('/:iduser', function (req, res) {
+    console.log(req.body);
+    const {iduser}=req.params;
+      const {username, email, password, names,lastnames, phone, photo, role} = req.body;
+      mysqlConection.query("UPDATE users SET username= ?, email= ?, password= ?, names= ? , lastnames= ?, phone= ?,photo= ?, role = ? , client= NULL, delivery = NULL WHERE iduser= ?", [username, email, password, names,lastnames, phone, photo, role, iduser], (err, row, fields) => {
+          if (err) {
+              console.log(err);
+          } else {
+  
+              res.json({
+                  "status": "user update"
+              })
+          }
+      })
+  
+  });
+  // Actualiza Clients
+  router.put('/clients/:idclient', function (req, res) {
+    console.log(req.body);
+    const {idclient}=req.params;
+      const {username,email,password,names, lastnames, phone, photo, url_identification, region, birthday} = req.body;
+      mysqlConection.query("UPDATE clients, users  SET username= ?,email= ? ,password=  ? ,names= ?, lastnames= ? , phone= ? , photo= ? , url_identification= ? , region= ? , birthday= ? WHERE clients.idclient = users.client AND clients.idclient = ?", [username,email,password,names, lastnames, phone, photo, url_identification, region, birthday,idclient], (err, row, fields) => {
+          if (err) {
+              console.log(err);
+          } else {
+  
+              res.json({
+                  "status": "user update"
+              })
+          }
+      })
+  
+  });
+  //Actualizar Deliveries
+  router.put('/deliveries/:idsellers', function (req, res) {
+    console.log(req.body);
+    const {idsellers}=req.params;
+      const {username,email,password,names, lastnames, phone, photo, url_identification,url_licence,balance,total_orders } = req.body;
+      mysqlConection.query("UPDATE  deliveries , users  SET username= ?,email= ? ,password=  ? ,names= ?, lastnames= ? , phone= ? , photo= ? , url_identification= ? ,url_licence =?, balance =?, total_orders=? WHERE deliveries.idsellers = users.delivery AND deliveries.idsellers = ?", [username,email,password,names, lastnames, phone, photo, url_identification,url_licence,balance,total_orders, idsellers], (err, row, fields) => {
+          if (err) {
+              console.log(err);
+          } else {
+  
+              res.json({
+                  "status": "delivery update"
+              })
+          }
+      })
+  
+  });
+
+
+  //Muestra
   router.get('/', (req, res) => {
     mysqlConection.query("SELECT * FROM users", (err, rows, fileds) => {
         if (err) {
@@ -118,7 +172,7 @@ router.delete('/:iduser', function (req, res) {
                 console.log(err);
             } else {
                 res.json({
-                    "status": "client deleted"
+                    "status": "client deleted¿¿"
                 });
             }
         })
