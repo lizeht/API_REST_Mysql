@@ -14,6 +14,9 @@ app.use(express.json());
 //app.use(require('/routes'));
 app.use('/api/locals',require('./routes/locals'));
 app.use('/api/users',require('./routes/users'));
+app.use('/api/products',require('./routes/products'));
+app.use('/api/login',require('./routes/login'));
+app.use('/api/productslocal',require('./routes/productslocal'));
 
 //STARTING SERVE
 app.listen(app.get('port'),() =>{
