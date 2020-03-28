@@ -44,9 +44,7 @@ router.post('/', function (req, res) {
         }
     })
     });
-       
-
-        //MOSTRAR PRODUCTS_LOCAL Y PRODUCTS COMBINADOS
+ //MOSTRAR PRODUCTS_LOCAL Y PRODUCTS COMBINADOS
         router.get('/:start/:end', (req, res) => {
             const {start,end}= req.params;
             mysqlConection.query("SELECT * FROM products_local JOIN products ON products.barcode = products_local.product LIMIT "+start+","+end, (err, rows, fileds) => {
