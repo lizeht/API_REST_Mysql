@@ -58,5 +58,27 @@ router.put('/:idproducts_local', function (req, res) {
     })
 
 });
+//MOSTRAR PRODUCTOS POR CATEGORIA
+router.get('/mostrar/:category',function (req, res) {
+    const {category}= req.params;
+    mysqlConection.query("SELECT * FROM products JOIN products_local ON products.barcode = products_local.product WHERE products_local.category=?",[category], (err, rows, fileds) => {
+        if (err) {
+            console.log("Error;", err);
+        } else {
+            res.json(rows);
+        }
+    });
 
+});
+
+//MOSTRAR 10 PRODUCTOS POR CADA CATEGORIA
+router.get('/',function (req, res) {
+    const {category}= req.params;
+    mysqlConection.query("SELECT * FROM products_local JOIN products ON products.barcode=products_local.product WHERE products_local.category IN (SELECT category FROM products_local GROUP BY category) ORDER BY products_local.category", (err, rows, fileds) => {
+        if (err) {
+            console.log("Error;", err);
+        } else {
+            res.json({"category":(rows[0].category),"":rows});
+        }
+    });
     module.exports = router;
