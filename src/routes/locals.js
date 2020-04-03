@@ -60,5 +60,47 @@ router.put('/:idlocal', function (req, res) {
     })
 
 });
+   //US8 1
+   router.get('/status/:idlocal', function (req, res) {
+   const {idlocal}=req.params;
+    mysqlConection.query("SELECT * FROM locals, orders JOIN clients WHERE  orders.local = locals.idlocal AND orders.client = clients.idclient AND orders.status_local='PENDIENTE' AND locals.idlocal = ? ORDER BY orders.date_ordened ASC", [idlocal], (err, rows, fields) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(rows);
+        }
+    })
+    });
+//US8 2
+router.get('/status2/:idlocal', function (req, res) {
+    const {idlocal}=req.params;
+     mysqlConection.query("SELECT * FROM locals, orders JOIN clients WHERE  orders.local = locals.idlocal AND orders.client = clients.idclient AND orders.status_local='ENVIADO' AND locals.idlocal = ? ORDER BY orders.date_ordened ASC", [idlocal], (err, rows, fields) => {
+         if (err) {
+             console.log(err);
+         } else {
+             res.json(rows);
+         }
+     })
+     });
+     router.get('/status3/:region/', function (req, res) {
+        const {region}=req.params;
+         mysqlConection.query("SELECT * FROM orders JOIN clients WHERE orders.status_local='PENDIENTE' AND clients.region= ?" , [region], (err, rows, fields) => {
+             if (err) {
+                 console.log(err);
+             } else {
+                 res.json(rows);
+             }
+         })
+         });
+         router.get('/status4/:idclient', function (req, res) {
+            const {idclient}=req.params;
+             mysqlConection.query("SELECT * FROM orders JOIN clients WHERE orders.client=clients.idclient AND clients.idclient= ? AND orders.status_delivery !='ENTREGADO' AND orders.status_delivery !='ENTREGADO'" , [idclient], (err, rows, fields) => {
+                 if (err) {
+                     console.log(err);
+                 } else {
+                     res.json(rows);
+                 }
+             })
+             });
 
 module.exports = router;
