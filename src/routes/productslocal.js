@@ -81,4 +81,5 @@ router.get('/',function (req, res) {
             res.json({"category":(rows[0].category),"":rows});
         }
     });
+    });
     module.exports = router;
